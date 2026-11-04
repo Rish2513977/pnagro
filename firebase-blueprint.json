@@ -1,0 +1,100 @@
+{
+  "entities": {
+    "Equipment": {
+      "title": "Equipment",
+      "description": "Farm machinery and equipment available for rental",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique equipment ID" },
+        "title": { "type": "string", "description": "Equipment title/model", "maxLength": 100 },
+        "category": { "type": "string", "description": "Machinery category", "maxLength": 50 },
+        "hp": { "type": "number", "description": "Horsepower rating" },
+        "hourlyRate": { "type": "number", "description": "Hourly rental price in INR" },
+        "dailyRate": { "type": "number", "description": "Daily rental price in INR" },
+        "location": { "type": "string", "description": "Village or town location", "maxLength": 100 },
+        "district": { "type": "string", "description": "District name", "maxLength": 60 },
+        "state": { "type": "string", "description": "State name", "maxLength": 60 },
+        "lat": { "type": "number", "description": "GPS Latitude coordinate" },
+        "lng": { "type": "number", "description": "GPS Longitude coordinate" },
+        "ownerId": { "type": "string", "description": "Firebase Auth UID of equipment owner" },
+        "ownerName": { "type": "string", "description": "Owner name", "maxLength": 100 },
+        "ownerPhone": { "type": "string", "description": "Owner contact number", "maxLength": 20 },
+        "isVerified": { "type": "boolean", "description": "Verification status by admin" },
+        "imageUrl": { "type": "string", "description": "Image URL", "maxLength": 500 },
+        "status": { "type": "string", "description": "Equipment availability status", "enum": ["Available", "Booked", "Maintenance"] },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp created" }
+      },
+      "required": ["title", "category", "hourlyRate", "location", "ownerId", "ownerPhone", "status"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Rental reservation for farm machinery",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Booking ID" },
+        "equipmentId": { "type": "string", "description": "ID of rented equipment" },
+        "equipmentTitle": { "type": "string", "description": "Title of equipment", "maxLength": 100 },
+        "renterId": { "type": "string", "description": "Firebase Auth UID of renter" },
+        "renterName": { "type": "string", "description": "Renter name", "maxLength": 100 },
+        "renterPhone": { "type": "string", "description": "Renter contact phone", "maxLength": 20 },
+        "rentalDate": { "type": "string", "description": "Date of rental start" },
+        "hours": { "type": "number", "description": "Rental duration in hours" },
+        "totalAmount": { "type": "number", "description": "Total booking cost in INR" },
+        "status": { "type": "string", "description": "Booking status", "enum": ["Pending", "Confirmed", "Active", "Completed", "Cancelled"] },
+        "otpHandshake": { "type": "string", "description": "4-digit OTP handshake code", "maxLength": 6 },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp created" }
+      },
+      "required": ["equipmentId", "renterId", "renterName", "renterPhone", "rentalDate", "hours", "totalAmount", "status"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Farmer review and rating for equipment",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Review ID" },
+        "equipmentId": { "type": "string", "description": "Equipment ID being reviewed" },
+        "userId": { "type": "string", "description": "Firebase Auth UID of reviewer" },
+        "userName": { "type": "string", "description": "Reviewer name", "maxLength": 100 },
+        "rating": { "type": "number", "description": "Rating score between 1 and 5" },
+        "comment": { "type": "string", "description": "Review comment", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp created" }
+      },
+      "required": ["equipmentId", "userId", "userName", "rating", "comment"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Registered farmer or equipment provider profile",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "User UID" },
+        "email": { "type": "string", "description": "User email address", "maxLength": 120 },
+        "name": { "type": "string", "description": "User full name", "maxLength": 100 },
+        "phone": { "type": "string", "description": "User contact number", "maxLength": 20 },
+        "village": { "type": "string", "description": "Village / Tehsil", "maxLength": 80 },
+        "district": { "type": "string", "description": "District", "maxLength": 60 },
+        "state": { "type": "string", "description": "State", "maxLength": 60 },
+        "role": { "type": "string", "description": "User platform role", "enum": ["farmer", "owner", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp registered" }
+      },
+      "required": ["email", "name", "role"]
+    }
+  },
+  "firestore": {
+    "/equipment/{equipmentId}": {
+      "schema": "Equipment",
+      "description": "Verified machinery catalog entries"
+    },
+    "/bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "Rental bookings between farmers and owners"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Equipment ratings and reviews"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile metadata"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "PNagro",
+  "description": "India's Farm & Heavy Equipment Rental Platform connecting farmers, contractors, and transporters.",
+  "requestFramePermissions": ["geolocation", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
